@@ -29,6 +29,8 @@ To do so, the first step is to find the pins of the communication bus, and only 
 To our luck and for whatever reason the SWD interface and the memory of the MCU are not locked, 
 so what I came up with(and what other smarter people came up with a long time before me), 
 was to determine the pin configuration based on STM32F030 GPIO registers, that are accessible with a SWD debugger.  
+
+##### Understanding the GPIO configuration of the STM32F030
 To those, who are not very familiar with STM32 microcontrollers(just as I was and still am lol) I'll clarify.
 STM32 microcontrollers have only few GPIO configuration register that are interesting for us: 
 
@@ -36,12 +38,23 @@ STM32 microcontrollers have only few GPIO configuration register that are intere
 and divided to 16 2-bit long blocks, one block per pin of port x. Each block can have 4 binary values, the one that we are interested in is 10 in binary, 
 because this would attribute an alternative function to the pin. This is important as all communication protocols use pin's alternative functions. 
 To clarify you can look at the picture below from the STM32F030x8 reference manual. Hopefully that helps!
-<!--- TODO: add image of MODER register STM32_GPIOx_MODER.PNG --->
+<img src="https://github.com/Foxdogface/EkahauSideKickResearch/blob/main/assets/STM32_GPIOx_MODER.PNG" width="500"/>
+
 * The next pair of registers are GPIOx_AFRL & GPIOx_AFRH, GPIO alternative function low & high registers accordingly  
 The low register is responsible for pin 0-7 and the high for pins 8-15. These registers are also divided to blocks, 
 but in this case they are 4-bit long and there are 8 of them in each registers. 
-Each 4-bit block selects the alternative function for the corresponding pin.  
-<!--- TODO: add image of AFRL & AFRH registers and alternative function map --->
+Each 4-bit block selects the alternative function number for the corresponding pin.  
+The images below should give you a better understanding of the process.
+<p float=left>
+  <img src="https://github.com/Foxdogface/EkahauSideKickResearch/blob/main/assets/STM32_GPIOx_AFR_combined.png" height="430"/>
+  <img src="https://github.com/Foxdogface/EkahauSideKickResearch/blob/main/assets/STM32_GPIOA_AF_TABLE.png" height="430"/>
+</p>
+
+##### Reversing the pinout of the STM32F030
+So, now, that we understand how the GPIO configuration of STM32F030 works we can actually reverse the communication bus pins beetween the MCU and the SMARC module.
+First, we need actually to read the register values, located at following base addresses with offsets of 0x00 for MODR reg, 0x20 for AFRL and 0x24 for AFRH.
+<img src="https://github.com/Foxdogface/EkahauSideKickResearch/blob/main/assets/STM32_GPIO_REGISTERS_OFFSET.png" height="300"/>
+<img src="https://github.com/Foxdogface/EkahauSideKickResearch/blob/main/assets/STM32_GPIO_MEMORY_MAP.png" height="316"/>
 
 ## Debug headers pinout
 There are 3 headers on the main PCB(neither of them has a reference designator, I'll call them J1, J2 and J3):
