@@ -1,9 +1,3 @@
-<style>
-th:empty {
-  visibility: hidden;
-}
-</style>
-
 # Ekahau SideKick 1 reverse engineering
 To start, I just want to say that this is a pretty much useless project, because of very little number of such devices manufactured. 
 The first reason for me of doing such deep investigation is to repair one of these devices, 
