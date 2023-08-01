@@ -60,18 +60,18 @@ First, we need actually to read the register values, located at following base a
 There are 3 headers on the main PCB(neither of them has a reference designator, I'll call them J1, J2 and J3):
 1. SMARC IMX6, 20 pin, 1mm pitch, J1 header  
   
-|     |        |        |         |
-|-----|--------|--------|---------|
-| GND | **20** | **19** | SER3_TX |
-| GND | **18** | **17** | SER3_RX |
-|     | **16** | **15** |         |
-|     | **14** | **13** |         |
-|     | **12** | **11** |         |
-|     | **10** | **9**  |         |
-|     | **8**  | **7**  |         |
-|     | **6**  | **5**  |         |
-|     | **4**  | **3**  |         |
-| GND | **2**  | **1**  | GND     |
+|              |        |        |            |
+|--------------|--------|--------|------------|
+| GND          | **20** | **19** | SER3_TX    |
+| GND          | **18** | **17** | SER3_RX    |
+| PEX_VDD_CORE | **16** | **15** | PA5        |
+| IO_PWR_OFF?  | **14** | **13** | RST_IN#    |
+| PWR_ON_BTN   | **12** | **11** | TEST#      |
+| GbE_MDI1‐    | **10** | **9**  | GbE_MDI1+  |
+| GbE_MDI0‐    | **8**  | **7**  | GbE_MDI0+  |
+| GbE_CTREF    | **6**  | **5**  | VDD3       |
+| VDD_IN_SMARC | **4**  | **3**  | BUCK_SYNC* |
+| GND          | **2**  | **1**  | GND        |
 
 2. STM32F030 SWD, 10 pin, 1mm pitch, J2 header
 
