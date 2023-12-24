@@ -65,13 +65,15 @@ There are 3 headers on the main PCB(neither of them has a reference designator, 
 | GND          | **20** | **19** | SER3_TX    |
 | GND          | **18** | **17** | SER3_RX    |
 | PEX_VDD_CORE | **16** | **15** | PA5        |
-| IO_PWR_OFF?  | **14** | **13** | RST_IN#    |
+| IO_PWR_OFF*  | **14** | **13** | RST_IN#    |
 | PWR_ON_BTN   | **12** | **11** | TEST#      |
 | GbE_MDI1‐    | **10** | **9**  | GbE_MDI1+  |
 | GbE_MDI0‐    | **8**  | **7**  | GbE_MDI0+  |
 | GbE_CTREF    | **6**  | **5**  | VDD3       |
 | VDD_IN_SMARC | **4**  | **3**  | BUCK_SYNC* |
 | GND          | **2**  | **1**  | GND        |
+
+* - If pulled-down turns off IO_VVD(PCIe multiplexer, USB hub, ) 3.3V line + 1.8V linear voltage converter.
 
 2. STM32F030 SWD, 10 pin, 1mm pitch, J2 header
 
@@ -88,10 +90,14 @@ This is a block of jumpers, and there is one installed from factory, between pin
 Because there is no silkscreen on the PCB it's difficult to tell which pin is considered the 1st one, 
 so I assume that it is the one in the down right corner, as it's shown on the photo down below.  
 
-|          |        |       |     |
-|----------|--------|-------|-----|
-| ?        | **10** | **9** | ?   |
-| ?        | **8**  | **7** | GND |
-| BOOTSEL2 | **6**  | **5** | GND |
-| BOOTSEL1 | **4**  | **3** | GND |
-| BOOTSEL0 | **2**  | **1** | VCC |
+|          |        |       |                         |
+|----------|--------|-------|-------------------------|
+| GND*     | **10** | **9** | Phase2 voltage switch** |
+| ?        | **8**  | **7** | GND                     |
+| BOOTSEL2 | **6**  | **5** | GND                     |
+| BOOTSEL1 | **4**  | **3** | GND                     |
+| BOOTSEL0 | **2**  | **1** | GND                     |
+
+* - only connected to GND when spectrum analyzer pcie module is inserted
+** -  This pin goes to a resistor, connected to phase 2 FB pin.
+      When it gets connected to ground, the resistor devider switches the output voltage from 3.3V to 5V for the spectrum analyzer.
